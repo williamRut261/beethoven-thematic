@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "updated": "2026-11-10",
+  "owner_scope": "Beethoven technical indicator and rotational signal research; PAPER/Composer only",
+  "state": "HYPOTHESIS_REGISTRY_NOT_LIVE_READY",
+  "baseline": {
+    "composer_strategy": "Beethoven Hybrid #1: SOXL/SOXS + 50% TSLQ bearish sleeve",
+    "nodes": 199,
+    "screenshot_window": [
+      "2025-09-30",
+      "2026-11-09"
+    ],
+    "annualized_pct": 503.8,
+    "max_drawdown_pct": -41.9,
+    "sharpe": 2.29,
+    "disclaimer": "Historical Composer screenshot results, repeatedly optimized on in-sample dates; not out-of-sample forecast."
+  },
+  "data_sources": [
+    {
+      "name": "Beethoven historical research artifact",
+      "source": "GitHub Actions 13766198532/public_closes.csv",
+      "coverage": "2021-11-10 to 2026-11-09",
+      "types": "Adjusted daily closing prices; 98 instrument columns"
+    },
+    {
+      "name": "Massive adjusted US stock daily aggregates",
+      "coverage": "2024-11-11 to 2026-11-09; TSLQ aligned from 2025-05",
+      "types": "Daily adjusted OHLC, price VWAP and volume for selected TSLA/gold instruments"
+    },
+    {
+      "name": "Composer exported allocation CSV",
+      "types": "User-uploaded portfolio weight histories and screenshot performance; periods vary"
+    }
+  ],
+  "research_rules": {
+    "selection": "No indicator declared validated solely by same-window ROI, early/late same-sign conditional returns, or unadjusted p-value.",
+    "tests": "16 prespecified daily indicator families; 98 symbols available; 962 usable recent comparisons with at least 30 true and 30 false observations; HAC(5) + BH FDR across all recent candidates.",
+    "statistical_result": "No risky-stock or leveraged ETF effects survive FDR q<0.10; BIL two statistical effects around 1bp are economically negligible.",
+    "require_validation": [
+      "Compare exactly the same dates in Composer",
+      "Evaluate future untouched paper segment",
+      "Minimum 30 events per era, preferably 100+",
+      "Robust to at least 10 and 20 bps trading costs",
+      "Confirm split-adjusted inceptions and historical availability",
+      "Stress one-day execution lag and alternate market regimes",
+      "Check ETF expense, volume, spreads, options IV if trading options"
+    ]
+  },
+  "priorities": [
+    {
+      "rank": 1,
+      "underlying": "SOXL / semiconductors",
+      "instruments": [
+        "SOXL",
+        "SOXS"
+      ],
+      "research_status": "MOST_PROMISING_EXISTING_COMPOSER_PAIR_NO_PROVEN_EDGE",
+      "tested": [
+        "SOXL 50d/200d SMA trend: +41/+77 bps early/recent next-day difference",
+        "SOXL 5d pullback: +67/+45 bps early/recent",
+        "Beethoven RSI3<30 -> SOXL: +0.90% early / +1.20% recent mean next day"
+      ],
+      "candidate_rule": "Gate bullish SOXL exposure by longer-term trend; study RSI3 pullback as a sizing overlay, NOT a new unconditional buy rule.",
+      "do_not_assume": "SOXL RSI10>79->SOXS bearish gate did not persist recently; same-period results are in-sample."
+    },
+    {
+      "rank": 2,
+      "underlying": "Gold miners",
+      "instruments": [
+        "GDXU",
+        "GDXD",
+        "GDX",
+        "GDXJ"
+      ],
+      "research_status": "BEETHOVEN_SPECIFIC_HYPOTHESIS_NEEDS_NEW_VALIDATION",
+      "tested": [
+        "Beethoven RSI3<30 -> GDXU: +0.14% early / +2.55% recent mean next day",
+        "RSI10>79 -> GDXD: early n9 +3.96% mean; recent n20 +0.33% mean",
+        "GDXU SMA50>SMA200: +17/+54 bps early/recent next-day difference",
+        "Daily ATR14 top-quartile predicted larger next-day magnitude in GDXU in 2025 and 2026"
+      ],
+      "candidate_rule": "Gold miner long confidence: RSI3<30 with broader regime and normalized ATR risk sizing; bearish entry rule requires more events.",
+      "do_not_assume": "Gold miner 3x ETNs have daily resets and issuer credit risk; simple SMA50 bull/bear 3x rotation performed poorly over the late test window."
+    },
+    {
+      "rank": 3,
+      "underlying": "Tesla",
+      "instruments": [
+        "TSLA",
+        "TSLL",
+        "TSLR",
+        "TSLT",
+        "TSL",
+        "TSLQ",
+        "TSLZ",
+        "TSDD",
+        "TSLS"
+      ],
+      "research_status": "USER_PRIORITY_BUT_INSUFFICIENT_PREDICTIVE_EVIDENCE",
+      "tested": [
+        "TSLA MACD bearish crossover: +85/+251 bps conditional next-day difference early/recent; only n26/n23",
+        "TSLA RSI3<30 -> TSLR: -0.13% early / +0.67% recent next-day mean",
+        "TSLA daily VWAP downward crossover: conditional next-day direction changed across 2025/2026",
+        "Unconditional 60% allocation simple SMA50 TSLL/TSLQ rotation on Sep 2025-Nov 2026 had negative model CAGR and >80% max drawdown at 10bps"
+      ],
+      "candidate_rule": "Keep TSLA as underlying signal test and existing TSLQ bearish diversification; study RSI3 reversal + volatility sizing, not a standalone permanent long-short rotation.",
+      "do_not_assume": "TSLL,TSLR,TSLT track roughly +2x daily; TSLQ,TSLZ,TSDD target -2x daily, TSLS -1x, TSL +1.25x. Daily returns are not options; options require strike/expiry/IV and execution price history."
+    },
+    {
+      "rank": 4,
+      "underlying": "NVIDIA",
+      "instruments": [
+        "NVDA",
+        "NVDL"
+      ],
+      "research_status": "EXPLORATORY_UNVALIDATED",
+      "tested": [
+        "NVDL RSI14<45 conditional next-day edge +122/+81 bps early/recent"
+      ],
+      "candidate_rule": "Study oversold bounce in higher-volatility regime; compare against NVDA outright and SOXL",
+      "do_not_assume": "No multiple-testing-adjusted significance"
+    },
+    {
+      "rank": 5,
+      "underlying": "Defense basket",
+      "instruments": [
+        "DFEN",
+        "LMT",
+        "RTX"
+      ],
+      "research_status": "EXPLORATORY_UNVALIDATED",
+      "tested": [
+        "DFEN RSI14<45 next-day edge +113/+42 bps early/recent",
+        "DFEN positive ROC60 next-day edge -109/-60 bps early/recent",
+        "LMT ROC20>0 +5/+18 bps early/recent"
+      ],
+      "candidate_rule": "Test DFEN oversold bounce as minority bullish sleeve rather than chase 20/60-day momentum",
+      "do_not_assume": "Earlier rotation Composer results differed because backtest date windows changed"
+    },
+    {
+      "rank": 6,
+      "underlying": "Palantir",
+      "instruments": [
+        "PLTR",
+        "PTIR"
+      ],
+      "research_status": "EXPLORATORY_SHORT_HISTORY",
+      "tested": [
+        "PTIR RSI14>55 next-day edge -317/-96 bps early/recent with short early ETF history",
+        "PLTR ROC5<0 next-day edge +38/+13 bps early/recent"
+      ],
+      "candidate_rule": "Avoid chasing PTIR overbought readings; study pullback gates and compare ordinary PLTR vs PTIR",
+      "do_not_assume": "ETF launched in 2024; little independent early history"
+    },
+    {
+      "rank": 7,
+      "underlying": "AMD",
+      "instruments": [
+        "AMDL"
+      ],
+      "research_status": "EXPLORATORY_UNVALIDATED",
+      "tested": [
+        "AMDL five-day pullback next-day edge +131/+88 bps early/recent"
+      ],
+      "candidate_rule": "Test pullback bounce with risk cap and true next-close fill, not unconditional daily rotation"
+    },
+    {
+      "rank": 8,
+      "underlying": "Uranium / nuclear",
+      "instruments": [
+        "URAA",
+        "BWXT",
+        "CEG"
+      ],
+      "research_status": "NEEDS_LONGER_TRACK_RECORD",
+      "tested": [
+        "URAA close>SMA50 next-day edge +69/+30 bps early/recent (early history short)"
+      ],
+      "candidate_rule": "Trend-gated alternative small sleeve; test under risk/vol regimes"
+    },
+    {
+      "rank": 9,
+      "underlying": "Biotech / other leveraged",
+      "instruments": [
+        "LABU",
+        "LABD",
+        "FNGU",
+        "FNGD",
+        "BITX",
+        "CONL",
+        "AMZZ",
+        "IONL"
+      ],
+      "research_status": "SECONDARY_SCREENED",
+      "tested": [
+        "LABU and CONL had some descriptive patterns; no adjusted-significance survival",
+        "IONL signals flipped across eras; short history"
+      ],
+      "candidate_rule": "Defer stock-specific code until additional sample and robustness checks"
+    }
+  ],
+  "verified_product_sources": {
+    "TSLL": "https://www.direxion.com/product/daily-tsla-bull-and-bear-leveraged-single-stock-etfs",
+    "TSLS": "https://www.direxion.com/product/daily-tsla-bull-and-bear-leveraged-single-stock-etfs",
+    "TSLR": "https://graniteshares.com/etfs/tslr/",
+    "TSL": "https://graniteshares.com/etfs/",
+    "TSLQ": "https://www.tradretfs.com/tslq-2x-short-tsla-daily-etf",
+    "TSLT": "https://www.rexshares.com/tslt/",
+    "TSLZ": "https://www.rexshares.com/t-rex-leveraged-etfs/",
+    "TSDD": "https://graniteshares.com/etfs/",
+    "GDXU": "https://microsectors.com/goldminers/",
+    "GDXD": "https://microsectors.com/goldminers/"
+  },
+  "future_additions": "Append stocks and new tests to this file on request; no continuous automatic monitoring or guaranteed discovery implied."
+}
