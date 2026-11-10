@@ -17,6 +17,9 @@ ROOTS={
 SCENARIOS=[
 ("original","original"),
 ("prior_role_v2","original"),
+("prior_role_v2","half"),
+("prior_role_v2","regime_vol40"),
+("prior_role_v2","regime_vol30"),
 ("thematic_v3","original"),
 ("thematic_v3","half"),
 ("thematic_v3","regime_vol40"),
