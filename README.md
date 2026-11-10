@@ -49,3 +49,9 @@ Do not enable LIVE or deploy any of this to A15 without a separately authorized,
 
 
 See [role-to-ticker hypotheses](ROLE_MAPPING.md). The reproducible job compares gold, semiconductor, biotech, and FANG+ priority-pair branches on identical historical periods. Any selector based on these returns is in-sample only.
+
+## Execution-timing and cost sensitivity
+
+The historical daily-close backtests assume signals calculated at close `t` can earn the move from close `t` to `t+1`. This is generally **not an executable fill assumption** without an advance order. A second, delayed test calculates the signal at close `t`, assumes execution at the **next day's closing price `t+1`**, and realizes returns starting `t+1→t+2`. It tests 5- and 20-basis-point turnover costs over the same one-year period for the matched priority-pair candidates. Neither test includes real bid-ask fills, spread, market impact or slippage, and a next-close order can still differ from live execution.
+
+The delayed test is a sensitivity check, not proof of profitability or a substitute for market-open/executable quote data. Future out-of-sample validation is still required.

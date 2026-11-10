@@ -78,3 +78,15 @@ def test_top_tier_gold_gate_preserves_original_gold_rsi_thresholds():
             assert new["lhs-val"]==src["lhs-val"]=="GDXU"
             assert new["rhs-val"]==src["rhs-val"]=="79"
             assert new["lhs-fn-params"]==src["lhs-fn-params"]
+
+def test_delay_prevents_same_close_signal_fill_on_overnight_jump():
+    root={"step":"root","children":[{"step":"asset","ticker":"X"}]}
+    dates=pd.bdate_range("2025-01-02",periods=220)
+    arr=np.full(220,100.0)
+    arr[201:]=150.0
+    df=pd.DataFrame({"X":arr, "SPY":np.full(220,100.0), "BIL":np.full(220,100.0)},index=dates)
+    immediate,_=backtest(root,df,dates[200],"original",0,execution_delay_days=0)
+    delayed,_=backtest(root,df,dates[200],"original",0,execution_delay_days=1)
+    assert immediate["period_return_pct"] > 49.9
+    assert delayed["period_return_pct"] == 0.0
+    assert delayed["execution_delay_days"]==1

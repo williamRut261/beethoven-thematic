@@ -75,14 +75,16 @@ def download(names):
         raise RuntimeError("Public price series is stale")
     return df,sorted(failures)
 
-def backtest(root,prices,start,style,cost_bps=5.0):
+def backtest(root,prices,start,style,cost_bps=5.0,execution_delay_days=0):
+    if execution_delay_days not in (0,1):
+        raise ValueError("Delay must be zero or one full trading day")
     dates=prices.index
     if len(dates)<202:
         raise ValueError("Missing 200-day warmup")
     begin=pd.Timestamp(start)
     values=[1.0]; observations=[]; previous={}
     turnover_sum=0.0
-    for i in range(200,len(dates)-1):
+    for i in range(200,len(dates)-1-execution_delay_days):
         if dates[i]<begin: continue
         hist=prices.iloc[:i+1]
         proposed=Evaluator(root,hist).evaluate()
@@ -92,9 +94,10 @@ def backtest(root,prices,start,style,cost_bps=5.0):
         turnover=sum(abs(weights.get(s,0)-previous.get(s,0)) for s in set(weights)|set(previous))
         profit=0.0
         realized={}
+        trade_index=i+execution_delay_days
         for s,w in weights.items():
             if s not in prices: raise ValueError("Missing execution symbol "+s)
-            a,b=prices[s].iloc[i:i+2].to_numpy(dtype=float)
+            a,b=prices[s].iloc[trade_index:trade_index+2].to_numpy(dtype=float)
             if not (np.isfinite(a) and np.isfinite(b) and a>0 and b>0):
                 raise ValueError("Historical price missing on selected day: "+s+" "+str(dates[i].date()))
             realized[s]=b/a
@@ -105,7 +108,7 @@ def backtest(root,prices,start,style,cost_bps=5.0):
         values.append(values[-1]*net)
         previous={s:w*realized[s]/net for s,w in weights.items()}
         turnover_sum+=turnover
-        observations.append(dates[i+1])
+        observations.append(dates[trade_index+1])
     if len(observations)<10: raise ValueError("Fewer than 10 realized return observations")
     equity=np.array(values)
     peaks=np.maximum.accumulate(equity)
@@ -119,7 +122,7 @@ def backtest(root,prices,start,style,cost_bps=5.0):
         "turnover_one_way":round(turnover_sum,3),
         "annualized_return_pct":round((equity[-1]**(365.25/max(1,(observations[-1]-observations[0]).days))-1)*100,4),
         "qualifies_under_50_in_sample":dd > -0.50,
-        "status":"PRELIMINARY",
+        "status":"PRELIMINARY", "execution_delay_days":execution_delay_days,
     },curve
 
 def main():
@@ -156,6 +159,30 @@ def main():
             report["status"]="PRELIMINARY"
     except Exception as exc:
         report["failure"]=str(exc)
+    # Execution timing sensitivity: signal at close t, buy at NEXT close t+1,
+    # then earn t+1 to t+2. A stricter (but still simplified) executable delay check.
+    report["execution_sensitivity"]={}
+    if report["status"]=="PRELIMINARY":
+        for name,style in (
+            ("gold_gate","regime_vol30"),
+            ("gold_gate","half"),
+            ("semis_gate","regime_vol30"),
+            ("biotech_gate","regime_vol30"),
+            ("fang_gate","regime_vol30"),
+        ):
+            key=name+"__"+style
+            report["execution_sensitivity"][key]={}
+            for bps in (5.0,20.0):
+                try:
+                    missing=sorted(required[name]-set(prices.columns))
+                    if missing:
+                        raise ValueError("Missing symbols: "+",".join(missing))
+                    result,curve=backtest(roots[name],prices,"2025-11-10",style,
+                                          cost_bps=bps,execution_delay_days=1)
+                    report["execution_sensitivity"][key][str(int(bps))+"bps"]=result
+                    curve.to_csv(OUT/(key+"_delay1_"+str(int(bps))+"bps.csv"))
+                except (ValueError,KeyError,RuntimeError,IndexError,TypeError) as exc:
+                    report["execution_sensitivity"][key][str(int(bps))+"bps"]={"status":"BLOCKED","reason":str(exc)}
     (OUT/"summary.json").write_text(json.dumps(report,indent=2)+"\n")
     print("STATUS:",report["status"],"DATA:",report.get("history_start"),"to",report.get("history_end"))
     if report.get("failure"):print("FAILURE:",report["failure"])
@@ -165,6 +192,11 @@ def main():
             x=window[start]
             print(label,x["status"],x.get("period_return_pct",x.get("reason")),
                   "DD",x.get("max_drawdown_pct"),"N",x.get("observations"))
+    print("EXECUTION DELAYED ONE CLOSE, 1Y:")
+    for name,by_cost in report.get("execution_sensitivity",{}).items():
+        for cost,results in by_cost.items():
+            print(name,cost,results.get("status"),results.get("period_return_pct",results.get("reason")),
+                  "DD",results.get("max_drawdown_pct"))
     if report["status"]=="BLOCKED": raise SystemExit(1)
 
 if __name__=="__main__":
