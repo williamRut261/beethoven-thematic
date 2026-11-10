@@ -14,6 +14,8 @@ ROOTS={
 "prior_role_v2":ROOT/"data/role_v2.json",
 "thematic_v3":ROOT/"data/thematic_v3.json",
 }
+from src.candidates import generate as generate_role_candidates
+
 SCENARIOS=[
 ("original","original"),
 ("prior_role_v2","original"),
@@ -24,6 +26,15 @@ SCENARIOS=[
 ("thematic_v3","half"),
 ("thematic_v3","regime_vol40"),
 ("thematic_v3","regime_vol30"),
+("gold_gate","original"),
+("gold_gate","half"),
+("gold_gate","regime_vol30"),
+("gold_precious","original"),
+("gold_precious","regime_vol30"),
+("semis_gate","original"),
+("semis_gate","regime_vol30"),
+("biotech_gate","regime_vol30"),
+("fang_gate","regime_vol30"),
 ]
 WINDOWS=["2024-11-10","2025-11-10","2026-05-10","2026-10-01"]
 
@@ -114,8 +125,9 @@ def backtest(root,prices,start,style,cost_bps=5.0):
 def main():
     OUT.mkdir(exist_ok=True)
     roots={name:json.loads(path.read_text()) for name,path in ROOTS.items()}
+    roots.update({name:tree for name,(tree,_mapping) in generate_role_candidates().items()})
     required={name:needed(root) for name,root in roots.items()}
-    report={"objective":"Compare predeclared daily risk overlays; NOT optimized for future 50% maximum drawdown",
+    report={"objective":"Frozen role-matched ticker swaps vs original and prior V2; exploratory, not return-optimized",
             "method":"Daily adjusted close, close-to-next-close 5 bps per unit turnover; no live orders",
             "data":"Yahoo Finance public historical prices; no pre-inception synthetic backfills",
             "limits":"Signal-engine parity with Composer, slippage, real fills, corporate actions, spreads and issuer credit risks not independently validated; no OOS guarantee.",

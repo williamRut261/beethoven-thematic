@@ -46,3 +46,6 @@ Uses public Yahoo Finance dividend/split-adjusted daily close histories, 200 tra
 **Critical caveat:** The Composer engine and rebalance fills are not independently parity-verified. Closing-to-next-closing simulation and turnover costs are not executable broker fills. Market-history survivorship, borrowing/shorting constraints, spreads, and exact transaction fees are not fully modeled. All variants are retrospective exploratory analyses; none is a true untouched out-of-sample test.
 
 Do not enable LIVE or deploy any of this to A15 without a separately authorized, validated project.
+
+
+See [role-to-ticker hypotheses](ROLE_MAPPING.md). The reproducible job compares gold, semiconductor, biotech, and FANG+ priority-pair branches on identical historical periods. Any selector based on these returns is in-sample only.

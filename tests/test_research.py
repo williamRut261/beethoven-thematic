@@ -41,3 +41,40 @@ def test_early_drawdown_includes_initial_equity():
     frame=pd.DataFrame({"X":series,"BIL":[100.0]*225,"SPY":[100.0]*225},index=dates)
     result,_=backtest(root,frame,dates[200],"original",0)
     assert result["max_drawdown_pct"]<=-79.9
+
+from src.candidates import generate,BASE,CANDIDATES,ROLES,transform
+
+def test_source_baseline_can_be_exactly_recreated():
+    rebuilt=transform(old,BASE)
+    assert rebuilt==role
+    assert len(CANDIDATES)==5
+
+def test_every_role_variant_has_identical_logic_and_directional_bull_bear_pair():
+    matched=generate()
+    pairs={
+        "gold_gate":("GDXU","GDXD"),
+        "gold_precious":("GDXU","GDXD"),
+        "semis_gate":("SOXL","SOXS"),
+        "biotech_gate":("LABU","LABD"),
+        "fang_gate":("FNGU","FNGD"),
+    }
+    for name,(tree,mapping) in matched.items():
+        assert shape(old)==shape(tree)
+        assert mapping["GDXU"],mapping["GDXD"]==pairs[name]
+        held={n["ticker"] for n in walk(tree) if n["step"]=="asset"}
+        assert len(held)>=40
+        assert (mapping["BIL"],mapping["BTAL"],mapping["TLT"],mapping["UVXY"])==("BIL","BTAL","TLT","UVXY")
+        assert len([n for n in walk(tree) if n["step"]=="if"])==67
+        assert len([n for n in walk(tree) if n["step"]=="filter"])==9
+    assert matched["gold_precious"][1]["AGQ"]=="AGQ"
+    assert matched["gold_gate"][1]["AGQ"]=="URAA"
+
+def test_top_tier_gold_gate_preserves_original_gold_rsi_thresholds():
+    gold=generate()["gold_gate"][0]
+    def top(tree):
+        return tree["children"][0]["children"][0]
+    for new,src in zip(top(gold)["children"],top(old)["children"]):
+        if not new.get("is-else-condition?"):
+            assert new["lhs-val"]==src["lhs-val"]=="GDXU"
+            assert new["rhs-val"]==src["rhs-val"]=="79"
+            assert new["lhs-fn-params"]==src["lhs-fn-params"]
