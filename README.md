@@ -1,5 +1,7 @@
 # Beethoven Thematic — Independent, public research
 
+**Latest 400% target test (324 combinations): zero met both constraints.** Highest <50% drawdown candidate produced **+251.09% simulated CAGR with −49.79% max drawdown**, selected in-sample; see [400% target analysis](GRID_400_TARGET.md). The previous gold + volatility-cap candidate remains the less aggressive research reference.
+
 ## Current leading hypothesis — GDXU/GDXD gate + 30% volatility cap (NOT DEPLOYED)
 
 **Research-only, selected after seeing the 2025–2026 sample.** Restoring the original **GDXU/GDXD +3x/−3x gold-miner pair** in Beethoven's top-priority RSI and trend branches preserved the source's strongest decision logic. Other 55-slot replacements are inherited from role-based V2 (including defense, nuclear, AI, robotics and 16 core stocks); unused risk exposure is allocated to BIL.
