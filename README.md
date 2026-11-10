@@ -1,23 +1,31 @@
 # Beethoven Thematic — Independent, public research
 
-## Current research selection — preliminary, no trading
+## Current leading hypothesis — GDXU/GDXD gate + 30% volatility cap (NOT DEPLOYED)
 
-The best observed **one-year risk-adjusted thematic configuration** in the latest reproducible exploratory run is **role-based V2 + regime_vol30**, not the FNGU/FNGD V3 map.
+**Research-only, selected after seeing the 2025–2026 sample.** Restoring the original **GDXU/GDXD +3x/−3x gold-miner pair** in Beethoven's top-priority RSI and trend branches preserved the source's strongest decision logic. Other 55-slot replacements are inherited from role-based V2 (including defense, nuclear, AI, robotics and 16 core stocks); unused risk exposure is allocated to BIL.
 
-| Same historical dates (Nov 11, 2025 – Nov 9, 2026) | Idealized return | Maximum drawdown |
+| Top-priority bull/bear pair | Same-close 1-year simulated return | Same-close maximum drawdown |
 |---|---:|---:|
-| Role-based V2, original full exposure | +132.93% | −61.77% |
-| Role-based V2, fixed 50% non-BIL cap | +53.48% | −30.58% |
-| Role-based V2, 40% volatility target | +48.95% | −26.68% |
-| **Role-based V2, 30% volatility target (selected for research)** | **+52.86%** | **−22.22%** |
-| Thematic V3, full exposure | −47.22% | −68.25% |
-| Thematic V3, 30% volatility target | −11.91% | −27.51% |
+| **Gold miners GDXU/GDXD +3x/−3x** | **+247.75%** | **−14.61%** |
+| Semiconductors SOXL/SOXS +3x/−3x | +83.68% | −16.96% |
+| Biotech LABU/LABD +3x/−3x (prior V2) | +52.86% | −22.22% |
+| FANG+ FNGU/FNGD +3x/−3x | −11.91% | −27.51% |
 
-All values are **exploratory, retrospective** 250-observation close-to-close backtests including simplified turnover costs. The selection was made **after observing the data**, so no out-of-sample performance claim can be made. The original Beethoven's enormous +5,157% modeled one-year return is not independently Composer-verified. A 50% maximum-drawdown threshold cannot be guaranteed prospectively.
+The same-close results assume a price-sensitive signal at close `t` earns the return starting at that same close, which may not be executable. **Execution-delay sensitivity**, with signals computed at close `t`, entry at close `t+1`, returns earned thereafter:
 
-- **[Reproducible GitHub run and source logs](https://github.com/williamRut261/beethoven-thematic/actions/runs/42814825808)**
-- **[Full historical-price/curve artifacts](https://github.com/williamRut261/beethoven-thematic/actions/runs/42814825808/artifacts/13762509811)**
-- See `RESEARCH_SELECTION.json` for the frozen current research selection. It does **not** authorize trading.
+| Priority pair + 30% volatility cap | Next-close / 5bps return (DD) | Next-close / 20bps return (DD) |
+|---|---:|---:|
+| **GDXU/GDXD** | **+76.92% (−15.25%)** | **+62.36% (−16.14%)** |
+| SOXL/SOXS | +33.70% (−16.40%) | +24.61% (−17.10%) |
+| LABU/LABD | +36.67% (−21.28%) | +26.21% (−22.09%) |
+| FNGU/FNGD | −7.68% (−20.30%) | −15.09% (−22.85%) |
+
+Tests cover 250 trading-day observations from November 11, 2025 through November 9, 2026 using Yahoo Finance adjusted daily prices, simplified turnover costs and the research-only Composer interpreter. No Composer parity, real fills, precise spreads, market impact, portfolio tax effects, issuer ETN credit risks or independent out-of-sample edge has been verified. **The results were selected after inspecting the same sample; they are not forecasts.** A drawdown below 50% in this sample cannot guarantee a future drawdown limit.
+
+- [Source-to-role mapping and predeclared hypotheses](ROLE_MAPPING.md)
+- [Successful run and detailed logs](https://github.com/williamRut261/beethoven-thematic/actions/runs/42817613459)
+- [Archived price data, curves, window results, execution sensitivity](https://github.com/williamRut261/beethoven-thematic/actions/runs/42817613459/artifacts/13764807233)
+- [Research selection metadata](RESEARCH_SELECTION.json) — does not authorize trading.
 
 
 **No broker access, no account keys, no LIVE/PAPER order submission, no scheduled automation.**

@@ -1,40 +1,66 @@
 {
-  "status": "EXPLORATORY RESEARCH SELECTION — NOT DEPLOYED",
-  "selected_scenario": "prior_role_v2__regime_vol30",
-  "strategy_file": "data/role_v2.json",
-  "overlay_style": "regime_vol30",
-  "portfolio_rule": "SPY above 200-day SMA: <=75% gross non-BIL; otherwise <=35%; estimate trailing-20-day portfolio annualized volatility, target <=30%, cap each non-BIL name <=35%, put residual in BIL. No borrowing.",
-  "selection_basis": "Best observed return-to-drawdown balance among predeclared variants tested on 2025-11-11 through 2026-11-09; selection made AFTER seeing returns, NOT a validation or out-of-sample proof.",
-  "one_year_results": {
-    "observations": 250,
-    "simulated_return_pct": 52.8622,
-    "max_drawdown_pct": -22.2213
+  "status": "LEADING EXPLORATORY HYPOTHESIS — NOT DEPLOYED OR VALIDATED",
+  "selected_scenario": "gold_gate__regime_vol30",
+  "strategy_generation": "src/candidates.py: generate()['gold_gate']; no production JSON modified",
+  "original_tree_file": "data/original.json",
+  "base_thematic_tree_file": "data/role_v2.json",
+  "pair_roles": {
+    "overbought_rsi_10_gt_79": {
+      "signal": "GDXU",
+      "holding": "GDXD"
+    },
+    "oversold_rsi_3_lt_30": {
+      "signal": "GDXU",
+      "holding": "GDXU"
+    },
+    "later_gold_trend_comparisons": "GDXU cumulative 60d vs 90d and separate GDXD branch"
   },
-  "other_predeclared_role_v2_results": {
-    "unconstrained": {
-      "return_pct": 132.9315,
-      "max_drawdown_pct": -61.7696
+  "other_themes": "Defense DFEN/PTIR, nuclear URAA/OKLL/BWXT/CEG, AI and semiconductor leverage, robotics, quantum and 16 core equity candidates as specified in role_v2 source map",
+  "overlay": "regime_vol30: SPY 200d trend; max 75% risky in bull, 35% in bear; each risky name <=35%; annualized 20d portfolio volatility target 30%; rest BIL; zero borrowing",
+  "one_year_period": "2025-11-11 through 2026-11-09",
+  "one_year_observations": 250,
+  "same_close_5bps": {
+    "return_pct": 247.7529,
+    "max_drawdown_pct": -14.6135,
+    "weakness": "Assumes price-based signal can be acted upon at same closing price"
+  },
+  "next_close_5bps": {
+    "return_pct": 76.9157,
+    "max_drawdown_pct": -15.2521
+  },
+  "next_close_20bps": {
+    "return_pct": 62.3617,
+    "max_drawdown_pct": -16.14
+  },
+  "comparators_next_close_20bps": {
+    "SOXL/SOXS": {
+      "return_pct": 24.6146,
+      "max_drawdown_pct": -17.096
     },
-    "half": {
-      "return_pct": 53.4801,
-      "max_drawdown_pct": -30.5847
+    "LABU/LABD": {
+      "return_pct": 26.2086,
+      "max_drawdown_pct": -22.0945
     },
-    "regime_vol40": {
-      "return_pct": 48.949,
-      "max_drawdown_pct": -26.6847
+    "FNGU/FNGD": {
+      "return_pct": -15.0933,
+      "max_drawdown_pct": -22.8522
     }
   },
-  "rejected_thematic_v3": {
-    "reason": "FNGU/FNGD pair did not improve one-year historical results under tested variants",
-    "unconstrained_return_pct": -47.2185,
-    "max_drawdown_pct": -68.249
-  },
-  "research_limits": [
-    "Backtest uses Yahoo Finance adjusted daily closes, idealized fills and 5bps per-unit-turnover transaction cost; not real broker fills.",
-    "Composer parity and original strategy's extraordinary simulated returns are unverified.",
-    "2025-2026 test is retrospectively observed; a true untouched out-of-sample period is still necessary.",
-    "A historical drawdown under 50% cannot guarantee a live drawdown under 50%.",
-    "No broker credentials, no trade orders, no scheduled workflows. No A15 or FSupertrend changes."
+  "selection_bias": "Selected by comparing outcomes on already-seen historical dates; NOT forward or independent out-of-sample evidence.",
+  "scientific_limits": [
+    "Current Composer strategy interpreter has NOT been validated against Composer live targets or historical trade records.",
+    "Yahoo adjusted daily closes, not executable intraday fills; next-close delay is a sensitivity model, not a fill simulation.",
+    "Different product inception dates prevent a clean two-year exact-universe test; no synthesized data substituted.",
+    "Transaction model uses a fixed 5bps or 20bps per unit of turnover; no issuer, spread, liquidity or market impact model.",
+    "The same sample was used to compare candidate ticker pairs; results are vulnerable to overfitting and regime concentration.",
+    "No future under-50% drawdown can be guaranteed."
   ],
-  "source_run": "https://github.com/williamRut261/beethoven-thematic/actions/runs/42814825808"
+  "next_research_steps": [
+    "Validate rule interpreter against original Composer signal/selection snapshots with independently sourced days.",
+    "Do untouched forward shadow paper with delayed execution and quote/volume/spread diagnostics before considering live broker execution.",
+    "Attribute the GDX pair's historical returns and test alternate market regimes without modifying risk thresholds."
+  ],
+  "broker_orders": "NONE",
+  "source_run": "https://github.com/williamRut261/beethoven-thematic/actions/runs/42817613459",
+  "source_artifacts": "https://github.com/williamRut261/beethoven-thematic/actions/runs/42817613459/artifacts/13764807233"
 }
