@@ -31,10 +31,10 @@ def test_signal_uses_only_t_data_not_future_t1_t2():
         {"step":"if-child","lhs-val":"X","lhs-fn":"current-price","lhs-fn-params":{},"rhs-fixed-value?":True,"rhs-val":"110","comparator":"gt","children":[{"step":"asset","ticker":"X"}]},
         {"step":"if-child","is-else-condition?":True,"children":[{"step":"asset","ticker":"BIL"}]}
     ]}]}
-    before=prepare(root,prices)
+    before=prepare(root,prices,start=str(dates[200].date()))
     changed=prices.copy()
     changed.loc[dates[-1],"X"]=1000.
-    after=prepare(root,changed)
+    after=prepare(root,changed,start=str(dates[200].date()))
     assert before[0]["raw"]==after[0]["raw"]
     assert before[0]["signals_asof"]==after[0]["signals_asof"]
     assert before[0]["signals_asof"]<before[0]["date"]
