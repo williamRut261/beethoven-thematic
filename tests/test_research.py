@@ -60,7 +60,7 @@ def test_every_role_variant_has_identical_logic_and_directional_bull_bear_pair()
     }
     for name,(tree,mapping) in matched.items():
         assert shape(old)==shape(tree)
-        assert mapping["GDXU"],mapping["GDXD"]==pairs[name]
+        assert (mapping["GDXU"], mapping["GDXD"]) == pairs[name]
         held={n["ticker"] for n in walk(tree) if n["step"]=="asset"}
         assert len(held)>=40
         assert (mapping["BIL"],mapping["BTAL"],mapping["TLT"],mapping["UVXY"])==("BIL","BTAL","TLT","UVXY")
