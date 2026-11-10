@@ -1,0 +1,40 @@
+{
+  "type": "beethoven_research_backtest_configuration",
+  "strategy_json": "strategies/beethoven_6_6_semis_gate.json",
+  "strategy_notation": "Preserves original 67 if conditions, 9 ranking filters, weighting/thresholds. Replaces source GDXU with SOXL and source GDXD with SOXS in BOTH holdings and signals, plus thematic V2 substitutions.",
+  "execution": {
+    "signals": "All conditions use prices through close t",
+    "entry": "At next trading day's closing price t+1",
+    "returns": "From close t+1 to close t+2",
+    "rebalance": "Daily",
+    "transaction_cost_bps_per_unit_one_way_turnover": 20,
+    "source": "Yahoo Finance dividend/split-adjusted daily close"
+  },
+  "external_allocation_overlay": {
+    "implementation": "src/grid_search.py allocation() using Config(bull=0.65,bear=1.0,per_name=1.0,vol=None)",
+    "market_regime": "SPY close vs 200-day simple moving average, computed through signal day t",
+    "max_total_non_BIL_exposure_when_above_200d_SMA": 0.65,
+    "max_total_non_BIL_exposure_when_not_above_200d_SMA": 1,
+    "max_single_non_BIL_weight": 1,
+    "annualized_volatility_target": null,
+    "residual_allocation": "BIL",
+    "margin_borrowing": false
+  },
+  "reported_simulation": {
+    "start_requested": "2025-11-10",
+    "last_reported_price_date": "2026-11-09",
+    "cagr_percent": 96.1604,
+    "period_return_percent": 95.3479,
+    "max_drawdown_percent": -45.8677,
+    "performance_status": "Retrospective, selected in sample; not forward-validated, not independently verified Composer parity",
+    "source_run": "https://github.com/williamRut261/beethoven-thematic/actions/runs/42819593532",
+    "source_artifact": "https://github.com/williamRut261/beethoven-thematic/actions/runs/42819593532/artifacts/13766198532"
+  },
+  "warnings": [
+    "This allocation overlay is not encoded within the Composer-style strategy JSON and will NOT automatically run in Composer.",
+    "Importing the strategy JSON alone does not replicate the simulated 96.16% CAGR / 45.87% drawdown.",
+    "GDXU RSI thresholds were carried into semiconductor products without recalibration; performance may not generalize.",
+    "No live trading, broker API or orders.",
+    "This is not a guarantee of keeping future drawdown under 50%."
+  ]
+}
