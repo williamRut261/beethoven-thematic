@@ -1,0 +1,40 @@
+{
+  "status": "EXPLORATORY RESEARCH SELECTION — NOT DEPLOYED",
+  "selected_scenario": "prior_role_v2__regime_vol30",
+  "strategy_file": "data/role_v2.json",
+  "overlay_style": "regime_vol30",
+  "portfolio_rule": "SPY above 200-day SMA: <=75% gross non-BIL; otherwise <=35%; estimate trailing-20-day portfolio annualized volatility, target <=30%, cap each non-BIL name <=35%, put residual in BIL. No borrowing.",
+  "selection_basis": "Best observed return-to-drawdown balance among predeclared variants tested on 2025-11-11 through 2026-11-09; selection made AFTER seeing returns, NOT a validation or out-of-sample proof.",
+  "one_year_results": {
+    "observations": 250,
+    "simulated_return_pct": 52.8622,
+    "max_drawdown_pct": -22.2213
+  },
+  "other_predeclared_role_v2_results": {
+    "unconstrained": {
+      "return_pct": 132.9315,
+      "max_drawdown_pct": -61.7696
+    },
+    "half": {
+      "return_pct": 53.4801,
+      "max_drawdown_pct": -30.5847
+    },
+    "regime_vol40": {
+      "return_pct": 48.949,
+      "max_drawdown_pct": -26.6847
+    }
+  },
+  "rejected_thematic_v3": {
+    "reason": "FNGU/FNGD pair did not improve one-year historical results under tested variants",
+    "unconstrained_return_pct": -47.2185,
+    "max_drawdown_pct": -68.249
+  },
+  "research_limits": [
+    "Backtest uses Yahoo Finance adjusted daily closes, idealized fills and 5bps per-unit-turnover transaction cost; not real broker fills.",
+    "Composer parity and original strategy's extraordinary simulated returns are unverified.",
+    "2025-2026 test is retrospectively observed; a true untouched out-of-sample period is still necessary.",
+    "A historical drawdown under 50% cannot guarantee a live drawdown under 50%.",
+    "No broker credentials, no trade orders, no scheduled workflows. No A15 or FSupertrend changes."
+  ],
+  "source_run": "https://github.com/williamRut261/beethoven-thematic/actions/runs/42814825808"
+}

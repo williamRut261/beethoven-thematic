@@ -1,5 +1,25 @@
 # Beethoven Thematic — Independent, public research
 
+## Current research selection — preliminary, no trading
+
+The best observed **one-year risk-adjusted thematic configuration** in the latest reproducible exploratory run is **role-based V2 + regime_vol30**, not the FNGU/FNGD V3 map.
+
+| Same historical dates (Nov 11, 2025 – Nov 9, 2026) | Idealized return | Maximum drawdown |
+|---|---:|---:|
+| Role-based V2, original full exposure | +132.93% | −61.77% |
+| Role-based V2, fixed 50% non-BIL cap | +53.48% | −30.58% |
+| Role-based V2, 40% volatility target | +48.95% | −26.68% |
+| **Role-based V2, 30% volatility target (selected for research)** | **+52.86%** | **−22.22%** |
+| Thematic V3, full exposure | −47.22% | −68.25% |
+| Thematic V3, 30% volatility target | −11.91% | −27.51% |
+
+All values are **exploratory, retrospective** 250-observation close-to-close backtests including simplified turnover costs. The selection was made **after observing the data**, so no out-of-sample performance claim can be made. The original Beethoven's enormous +5,157% modeled one-year return is not independently Composer-verified. A 50% maximum-drawdown threshold cannot be guaranteed prospectively.
+
+- **[Reproducible GitHub run and source logs](https://github.com/williamRut261/beethoven-thematic/actions/runs/42814825808)**
+- **[Full historical-price/curve artifacts](https://github.com/williamRut261/beethoven-thematic/actions/runs/42814825808/artifacts/13762509811)**
+- See `RESEARCH_SELECTION.json` for the frozen current research selection. It does **not** authorize trading.
+
+
 **No broker access, no account keys, no LIVE/PAPER order submission, no scheduled automation.**
 
 This is a **ticker adaptation** of the author-provided Beethoven 6.6 Composer source plus a **separate** ex-ante risk-control overlay. All **67 conditional rules**, **9 ranking filters**, weighting groups and numerical thresholds are retained in the unmodified ticker-mapped strategy. Risk overlay deliberately changes final weights to cap gross exposure and concentrate remaining capital in BIL.
